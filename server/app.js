@@ -45,6 +45,8 @@ function parseAndInput (str, tablename) {
 		if (err) {
 			return false
 		} else {
+			var inputArray = [];
+
 			for (var i = 0 ; i < output.length; i++ ) {
 				var o = output[i];
 				var e;
@@ -105,9 +107,11 @@ function parseAndInput (str, tablename) {
 				} else {
 					throw Error("Bad tablename.")
 				};
+
+				inputArray.push(e);
 			}
 
-			console.log("DONE")
+			db(tablename).insert(inputArray);
 		}
 	});
 };
