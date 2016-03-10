@@ -13,7 +13,7 @@
     "jsftp": "^1.5.3",
     "knex": "^0.10.0",
     "nodemon": "^1.8.1",
-    "pg": "^4.4.6"
+    "pg": "^4.5.1"
   },
   "scripts": {
     "start": "./node_modules/.bin/nodemon server/app.js --ignore node_modules/"
