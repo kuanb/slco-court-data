@@ -2,6 +2,7 @@
 exports.up = function(knex, Promise) {
 	return Promise.all([
 		knex.schema.createTable("case_record", function(table) {
+			table.increments("cr_id").primary();
 			table.string("location_code");
 			table.string("court_type");
 			table.string("party_num");
@@ -19,6 +20,7 @@ exports.up = function(knex, Promise) {
 			table.string("booking_num");
 		}),
 		knex.schema.createTable("court_event", function(table) {
+			table.increments("ce_id").primary();
 			table.string("location_code");
 			table.string("court_type");
 			table.string("party_num");
@@ -35,6 +37,7 @@ exports.up = function(knex, Promise) {
 			table.string("cancel_reason");
 		}),
 		knex.schema.createTable("charge_record", function(table) {
+			table.increments("ch_id").primary();
 			table.string("location_code");
 			table.string("court_type");
 			table.string("party_num");
