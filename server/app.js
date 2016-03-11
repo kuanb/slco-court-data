@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
 
-app.get("/api/v1", function (req, res) {
+app.get("/api/v0", function (req, res) {
 	var request = {
 		url: req.protocol + '://' + req.get('host') + req.originalUrl,
 		params: req.query,
