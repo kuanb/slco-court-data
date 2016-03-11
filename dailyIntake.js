@@ -6,7 +6,6 @@ var db = require("./server/db");
 
 // libraries
 var JSFtp = require("jsftp");
-var AWS = require("aws-sdk");
 var csv = require("csv");
 
 function pullFromFTP (filename, tablename) {
