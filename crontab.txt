@@ -1,0 +1,1 @@
+* * * * * /home/ubuntu/.nvm/v0.10.13/bin/node /slco-court-data/dailyIntake.js
