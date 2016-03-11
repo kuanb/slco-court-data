@@ -31,7 +31,7 @@ exports.up = function(knex, Promise) {
 			table.string("court_room");
 			table.string("court_int_case_num");
 			table.dateTime("created");
-			table.boolean("cancelled").defaultTo(false);
+			table.dateTime("cancelled");
 			table.string("cancel_reason");
 		}),
 		knex.schema.createTable("charge_record", function(table) {

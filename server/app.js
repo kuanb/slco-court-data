@@ -42,7 +42,7 @@ function parseAndInput (str, tablename) {
 		auto_parse_date: true
 	}, function (err, output) {
 		if (err) {
-			return false
+			console.log("Error occured while parsing a row from " + tablename + ": ", err)
 		} else {
 			console.log(output.length + " entries for " + tablename + ".");
 
@@ -114,7 +114,7 @@ function parseAndInput (str, tablename) {
 						}
 					}
 					if (e.created) {
-						var d = e.created;
+						var d = new Date(e.created);
 						if (Object.prototype.toString.call(d) === "[object Date]") {
 						  if (isNaN(d.getTime())) { e.created = null; }
 						} else {
@@ -122,12 +122,16 @@ function parseAndInput (str, tablename) {
 						}
 					}
 					if (e.cancelled) {
-						var d = e.created;
+						var d = new Date(e.cancelled);
 						if (Object.prototype.toString.call(d) === "[object Date]") {
 						  if (isNaN(d.getTime())) { e.cancelled = null; }
 						} else {
 						  e.cancelled = null;
 						}
+					}
+					if (o[13] !== "") {
+						console.log("cancelled 0: ", o[13]);
+						console.log("cancelled 1: ", e.cancelled);
 					}
 
 				} else if ("charge_record") {
@@ -148,6 +152,36 @@ function parseAndInput (str, tablename) {
 						judgement_date: o[14] == false ? null : o[14],
 						judgement_desc: o[15] == false ? null : o[15]
 					};
+
+					// clean up certain types
+					if (e.amount_due) {
+						e.amount_due = Math.ceil(Number(e.amount_due) * 100) / 100;
+					}
+					if (e.violation_date) {
+						var d = new Date(e.violation_date);
+						if (Object.prototype.toString.call(d) === "[object Date]") {
+						  if (isNaN(d.getTime())) { e.violation_date = null; }
+						} else {
+						  e.violation_date = null;
+						}
+					}
+					if (e.arrest_date) {
+						var d = new Date(e.arrest_date);
+						if (Object.prototype.toString.call(d) === "[object Date]") {
+						  if (isNaN(d.getTime())) { e.arrest_date = null; }
+						} else {
+						  e.arrest_date = null;
+						}
+					}
+					if (e.judgement_date) {
+						var d = new Date(e.judgement_date);
+						if (Object.prototype.toString.call(d) === "[object Date]") {
+						  if (isNaN(d.getTime())) { e.judgement_date = null; }
+						} else {
+						  e.judgement_date = null;
+						}
+					}
+
 				} else {
 					throw Error("Bad tablename.")
 				};
@@ -159,8 +193,6 @@ function parseAndInput (str, tablename) {
 						}).catch(function (err) {
 							console.log("Entry error: ", err);
 						});
-					} else {
-						console.log("Exempted: ", e)
 					}
 				});
 			}
@@ -190,7 +222,7 @@ function validateInput (e, tablename, cb) {
 				}
 			});
 		} else {
-			return false;
+			cb(false);
 		}
 
 	} else if (tablename == "court_event") {
@@ -198,7 +230,6 @@ function validateInput (e, tablename, cb) {
 		if (e.case_num == undefined) { ok = false; }
 		if (e.defendant_first == undefined) { ok = false; }
 		if (e.defendant_last == undefined) { ok = false; }
-		if (e.hearing_code == undefined) { ok = false; }
 
 		if (ok) {
 			db(tablename)
@@ -206,7 +237,6 @@ function validateInput (e, tablename, cb) {
 			.andWhere("case_num", e.case_num)
 			.andWhere("defendant_first", e.defendant_first)
 			.andWhere("defendant_last", e.defendant_last)
-			.andWhere("hearing_code", e.hearing_code)
 			.limit(1).then(function (resp) {
 				if (resp.length > 0) { 
 					cb(false);
@@ -215,7 +245,7 @@ function validateInput (e, tablename, cb) {
 				}
 			});
 		} else {
-			return false;
+			cb(false);
 		}
 
 	} else if ("charge_record") {
@@ -234,7 +264,7 @@ function validateInput (e, tablename, cb) {
 				}
 			});
 		} else {
-			return false;
+			cb(false);
 		}
 
 	} else {
