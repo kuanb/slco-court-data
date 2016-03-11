@@ -8,11 +8,11 @@ exports.up = function(knex, Promise) {
 			table.string("case_num");
 			table.string("defendant_first");
 			table.string("defendant_last");
-			table.string("disposition_date");
+			table.date("disposition_date");
 			table.string("disposition_code");
-			table.string("bail_amount");
-			table.string("ssn");
-			table.string("birth_date");
+			table.float("bail_amount");
+			table.integer("ssn");
+			table.date("birth_date");
 			table.string("race_code");
 			table.string("gender");
 			table.string("disposition_desc");
@@ -25,13 +25,13 @@ exports.up = function(knex, Promise) {
 			table.string("case_num");
 			table.string("defendant_first");
 			table.string("defendant_last");
-			table.string("appear_date");
-			table.string("appear_time");
+			table.date("appear_date");
+			table.time("appear_time");
 			table.string("hearing_code");
 			table.string("court_room");
 			table.string("court_int_case_num");
-			table.string("created");
-			table.string("cancelled");
+			table.dateTime("created");
+			table.boolean("cancelled").defaultTo(false);
 			table.string("cancel_reason");
 		}),
 		knex.schema.createTable("charge_record", function(table) {
@@ -42,13 +42,13 @@ exports.up = function(knex, Promise) {
 			table.string("violation_code");
 			table.string("severity");
 			table.string("charge_sequence");
-			table.string("amount_due");
+			table.float("amount_due");
 			table.string("judgement_code");
 			table.string("case_type");
 			table.string("offense_desc");
-			table.string("violation_date");
-			table.string("arrest_date");
-			table.string("judgement_date");
+			table.date("violation_date");
+			table.date("arrest_date");
+			table.date("judgement_date");
 			table.string("judgement_desc");
 		})
 	])
